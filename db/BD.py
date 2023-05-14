@@ -46,6 +46,12 @@ class BaseDatos:
         self.cursor.execute("INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO) VALUES ('"+username+"','"+password+"')")
         self.connection.commit()
 
+    def obtenerUsername(self, id_usuario):
+        query = "SELECT nombre_usuario FROM usuario WHERE id= :id"
+        self.cursor.execute(query, {"id": id_usuario})
+        username = self.cursor.fetchone()
+        return username
+
     def existeLibro(self, id_libro):
         existe : bool = False
         libro = self.obtenerLibro(id_libro=id_libro)
@@ -94,6 +100,37 @@ class BaseDatos:
         cv2.imshow("Imagen", img)
         cv2.waitKey(0)
         cv2.destroyAllWindows()"""
+    
+    def obtenerLibros(self):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro"
+        self.cursor.execute(query)
+        libros = self.cursor.fetchall()
+        return libros
+
+    def obtenerLibrosFavoritos(self, id_usuario):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Favoritos' ORDER BY libro.id"
+        self.cursor.execute(query, {"id": id_usuario})
+        libros = self.cursor.fetchall()
+        return libros
+    
+    def obtenerLibrosSiguiendo(self, id_usuario):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Siguiendo' ORDER BY libro.id"
+        self.cursor.execute(query, {"id": id_usuario})
+        libros = self.cursor.fetchall()
+        return libros
+    
+    def obtenerLibrosLeido(self, id_usuario):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Leido' ORDER BY libro.id"
+        self.cursor.execute(query, {"id": id_usuario})
+        libros = self.cursor.fetchall()
+        return libros
+    
+    def obtenerLibrosPendiente(self, id_usuario):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Pendiente' ORDER BY libro.id"
+        self.cursor.execute(query, {"id": id_usuario})
+        libros = self.cursor.fetchall()
+        return libros
+
 
 
 
@@ -102,14 +139,17 @@ BaseDatos = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.
 BaseDatos.conexion()
 #BaseDatos.insertarUsuario(username='paco', password='12345')
 
-libro = BaseDatos.obtenerLibro(id_libro='12')
+#libro = BaseDatos.obtenerLibro(id_libro='12')
+#libros = BaseDatos.obtenerLibrosFavoritos(id_usuario='5')
+libros = BaseDatos.obtenerLibros()
+for i in libros:
+    print(i)
+#if(libro):
+#   print(BaseDatos.obtenerDescripcion(id_libro='12')) 
 
-print(libro)
-if(libro):
-   print(BaseDatos.obtenerDescripcion(id_libro='12')) 
 
+#BaseDatos.cargarImagen(ruta="LaSangreDeLosElfos.jpeg", id_libro="3")
+#BaseDatos.mostrar_tabla(tabla="libros")
+#BaseDatos.descargarImagen(id_libro="1")
 
-BaseDatos.cargarImagen(ruta="LaSangreDeLosElfos.jpeg", id_libro="3")
-BaseDatos.mostrar_tabla(tabla="libros")
-BaseDatos.descargarImagen(id_libro="1")
 BaseDatos.desconexion()"""

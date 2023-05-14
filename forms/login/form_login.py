@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter.font import BOLD
 import util.generic as utl
-from forms.master.form_master_designer import MasterPanelDesigner
+from forms.master.form_master import MasterPanel
 from forms.login.form_login_designer import FormLoginDesigner
 from db.BD import BaseDatos
 import util.encoding_decoding as end_dec
@@ -37,6 +37,6 @@ class FormLogin(FormLoginDesigner):
         if(password == b_password):
            self.ventana.destroy()
            BaseDatos.desconexion(self=self.BaseDatos)
-           MasterPanelDesigner()
+           MasterPanel(usuario[0][0])
         else: 
             messagebox.showerror(message="El usuario y la contraseña no coincide", title="Mensaje")

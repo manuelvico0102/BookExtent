@@ -1,0 +1,10 @@
+Pasar la base de datos a donde me corresponda, y así evitar tener que conectarme y desconectarme todo el rato 
+
+Aumentar el tamaño de la lista
+
+Hacer que cuando se haga click en la lista se abra la correspondiente ventana del libro, en caso de que no se 
+pueda añadir una caja para indicar el id del libro y un boton para ejecutar la funcion
+
+Añadir la funcionalidad del boton de AR de la ventana libro
+
+Añadir el reconocimiento de persona al inicio de sesión

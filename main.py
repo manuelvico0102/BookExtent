@@ -1,8 +1,8 @@
-"""from forms.login.form_login import FormLogin
-FormLogin()"""
-
-from forms.master.form_master_designer import MasterPanelDesigner
-MasterPanelDesigner()
+from forms.login.form_login import FormLogin
+FormLogin()
+"""
+from forms.master.form_master import MasterPanel
+MasterPanel(id_usuario='5')"""
 
 """
 from db.BD import BaseDatos
