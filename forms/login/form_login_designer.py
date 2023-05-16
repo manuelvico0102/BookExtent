@@ -6,7 +6,7 @@ import util.generic as utl
 
 class FormLoginDesigner:
 
-    def __init__(self):
+    def __init__(self, basedatos):
         self.ventana = tk.Tk()
         self.ventana.title("Inicio de sesión")
         self.ventana.geometry('800x500')

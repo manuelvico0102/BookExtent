@@ -4,9 +4,10 @@ from tkinter.font import BOLD
 import util.generic as utl
 
 
+
 class FormRegisterDesigner():
 
-    def __init__(self):
+    def __init__(self, basedatos):
         self.ventana = tk.Toplevel()
         self.ventana.title("Registro")
         self.ventana.config(bg='#fcfcfc')
