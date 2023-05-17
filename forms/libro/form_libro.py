@@ -1,16 +1,11 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-from tkinter.font import BOLD
-import util.generic as utl
-from forms.master.form_master_designer import MasterPanel
+from tkinter import messagebox
 from db.BD import BaseDatos
-import util.encoding_decoding as end_dec
 from forms.libro.form_libro_designer import FormLibroDesigner
 from tkinter import filedialog
 
 class FormLibro(FormLibroDesigner):
-    def __init__(self, id_libro=None):
-        super().__init__(id_libro)
+    def __init__(self, basedatos : BaseDatos, id_libro=None, id_usuario=None):
+        super().__init__(basedatos=basedatos, id_libro=id_libro, id_usuario=id_usuario)
 
     def subirImagen(self):
         ruta = None

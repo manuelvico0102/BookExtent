@@ -1,23 +1,18 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from tkinter.font import BOLD
 import util.generic as utl
 from db.BD import BaseDatos
-import cv2
 
-"""
-    Cosas que habría que hacer:
-        -Comprobar si el libro tiene imagen, en caso de que no tenga ponerle por ejemplo el logo de la app
-"""
 class FormLibroDesigner:
 
-    def __init__(self, id_libro=None):
+    def __init__(self, basedatos : BaseDatos, id_libro=None, id_usuario=None):
         self.id_libro = id_libro
-        #Nos conectamos a la BD
-        self.bd = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-        BaseDatos.conexion(self=self.bd)
+        self.bd = basedatos
+        self.id_usuario = id_usuario
+    
         if(BaseDatos.existeLibro(self=self.bd, id_libro=self.id_libro)):
-            #Traemos el libro
+            #Traemos el libro || cambiar esto por una funcion
             self.libro = BaseDatos.obtenerLibro(self=self.bd, id_libro=self.id_libro)
             self.titulo_libro = self.libro[0][1]
             self.autor_libro = self.libro[0][2]
@@ -33,7 +28,8 @@ class FormLibroDesigner:
             self.ventana.resizable(width=0, height=0)   
             utl.centrar_ventana(self.ventana,800,600)
             
-            # Pasar la imagen de CV2 --> PIL --> Imagen compatible con tkinter
+
+            # Pasar la imagen de CV2 --> PIL --> Imagen compatible con tkinter || Cambiar esto por una funcion que englobe las dos
             self.imagen_libro = utl.convertirCV2aPIL(self.imagen_libro)
             portada = utl.imagenResize(self.imagen_libro, (200, 300))
 
@@ -102,11 +98,7 @@ class FormLibroDesigner:
             b_imagen.bind("<Return>", (lambda event: self.subirImagen()))  # Si le das al enter tambien llama a la funcion
 
             self.ventana.mainloop()
-             # Nos desconectamos de la base de datos
-            BaseDatos.desconexion(self=self.bd)
         else: 
-            #Desconectamos
-            BaseDatos.desconexion(self=self.bd)
             messagebox.showerror(message="El libro no existe", title="Mensaje")
     
     def guardarFavoritos(self):

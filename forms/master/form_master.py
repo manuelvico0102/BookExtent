@@ -2,8 +2,8 @@ from forms.master.form_master_designer import MasterPanelDesigner
 from db.BD import BaseDatos
 
 class MasterPanel(MasterPanelDesigner):
-    def __init__(self, id_usuario):
-        super().__init__(id_usuario=id_usuario)
+    def __init__(self, basedatos : BaseDatos, id_usuario):
+        super().__init__(basedatos=basedatos, id_usuario=id_usuario)
     
     def obtenerNombre(self, id_usuario):
         return self.bd.obtenerUsername(id_usuario=id_usuario)
@@ -17,25 +17,25 @@ class MasterPanel(MasterPanelDesigner):
     
     def verFavoritos(self, id_usuario):
         self.lista.delete(*self.lista.get_children())
-        libros = self.bd.obtenerLibrosFavoritos(id_usuario=id_usuario)
+        libros = self.bd.obtenerLibrosCategoria(id_usuario=id_usuario, categoria='Favoritos')
         for i in libros:
             self.lista.insert('', 'end', values=i)
     
     def verSiguiendo(self, id_usuario):
         self.lista.delete(*self.lista.get_children())
-        libros = self.bd.obtenerLibrosSiguiendo(id_usuario=id_usuario)
+        libros = self.bd.obtenerLibrosCategoria(id_usuario=id_usuario, categoria='Siguiendo')
         for i in libros:
             self.lista.insert('', 'end', values=i)
     
     def verPendientes(self, id_usuario):
         self.lista.delete(*self.lista.get_children())
-        libros = self.bd.obtenerLibrosPendiente(id_usuario=id_usuario)
+        libros = self.bd.obtenerLibrosCategoria(id_usuario=id_usuario, categoria='Pendiente')
         for i in libros:
             self.lista.insert('', 'end', values=i)
     
-    def verLeido(self, id_usuario):
+    def verFinalizados(self, id_usuario):
         self.lista.delete(*self.lista.get_children())
-        libros = self.bd.obtenerLibrosLeido(id_usuario=id_usuario)
+        libros = self.bd.obtenerLibrosCategoria(id_usuario=id_usuario, categoria='Leido')
         for i in libros:
             self.lista.insert('', 'end', values=i)
 

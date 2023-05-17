@@ -1,7 +1,4 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-from tkinter.font import BOLD
-import util.generic as utl
+from tkinter import messagebox
 from forms.master.form_master import MasterPanel
 from forms.login.form_login_designer import FormLoginDesigner
 from db.BD import BaseDatos
@@ -40,6 +37,6 @@ class FormLogin(FormLoginDesigner):
         if(password == b_password):
            self.ventana.destroy()
            #Aqui le tengo que pasar la base de datos para no crear una nueva conexion
-           MasterPanel(usuario[0][0])
+           MasterPanel(basedatos=self.bd, id_usuario=usuario[0][0])
         else: 
             messagebox.showerror(message="El usuario y la contraseña no coincide", title="Mensaje")

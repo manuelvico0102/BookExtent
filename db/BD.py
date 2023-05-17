@@ -1,5 +1,4 @@
 import oracledb
-import io
 import numpy as np
 import cv2
 
@@ -107,29 +106,12 @@ class BaseDatos:
         libros = self.cursor.fetchall()
         return libros
 
-    def obtenerLibrosFavoritos(self, id_usuario):
-        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Favoritos' ORDER BY libro.id"
-        self.cursor.execute(query, {"id": id_usuario})
+    def obtenerLibrosCategoria(self, id_usuario, categoria):
+        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = :categoria ORDER BY libro.id"
+        self.cursor.execute(query, {"id": id_usuario, "categoria": categoria})
         libros = self.cursor.fetchall()
         return libros
     
-    def obtenerLibrosSiguiendo(self, id_usuario):
-        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Siguiendo' ORDER BY libro.id"
-        self.cursor.execute(query, {"id": id_usuario})
-        libros = self.cursor.fetchall()
-        return libros
-    
-    def obtenerLibrosLeido(self, id_usuario):
-        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Leido' ORDER BY libro.id"
-        self.cursor.execute(query, {"id": id_usuario})
-        libros = self.cursor.fetchall()
-        return libros
-    
-    def obtenerLibrosPendiente(self, id_usuario):
-        query = "SELECT libro.id, libro.titulo, libro.autor FROM libro INNER JOIN biblioteca_usuario ON libro.ID = biblioteca_usuario.id_libro INNER JOIN seccion ON biblioteca_usuario.id_seccion = seccion.ID WHERE biblioteca_usuario.id_usuario = :id AND seccion.NOMBRE_SECCION = 'Pendiente' ORDER BY libro.id"
-        self.cursor.execute(query, {"id": id_usuario})
-        libros = self.cursor.fetchall()
-        return libros
 
 
 

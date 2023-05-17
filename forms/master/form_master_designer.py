@@ -6,8 +6,8 @@ import util.generic as utl
 from db.BD import BaseDatos
 
 class MasterPanelDesigner:
-    def __init__(self, id_usuario):
-        self.conexion()
+    def __init__(self, basedatos : BaseDatos, id_usuario):
+        self.bd = basedatos
         self.id_usuario = id_usuario
         self.ventana = tk.Tk()
         self.ventana.title('BookExtent')
@@ -54,9 +54,9 @@ class MasterPanelDesigner:
         bPendientes.grid(row=3, column=0, pady=10, sticky='nsew')
         bPendientes.bind("<Return>", (lambda event: self.verPendientes(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
 
-        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verLeido(id_usuario=self.id_usuario))
+        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verFinalizados(id_usuario=self.id_usuario))
         bFinalizados.grid(row=4, column=0, pady=10, sticky='nsew')
-        bFinalizados.bind("<Return>", (lambda event: self.verLeido(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
+        bFinalizados.bind("<Return>", (lambda event: self.verFinalizados(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
 
         frame_menu.grid_columnconfigure(0, minsize=220)
         
@@ -75,7 +75,6 @@ class MasterPanelDesigner:
         self.lista.pack(fill=tk.X, padx=20, pady=5)
         
         self.ventana.mainloop()
-        self.desconexion()
 
     
     def verLibros(self):
@@ -90,15 +89,8 @@ class MasterPanelDesigner:
     def verPendientes(self, id_usuario):
         pass
 
-    def verLeido(self, id_usuario):
+    def verFinalizados(self, id_usuario):
         pass
 
     def obtenerNombre(self, id_usuario):
         pass
-
-    def conexion(self):
-        self.bd = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-        BaseDatos.conexion(self=self.bd)
-
-    def desconexion(self):
-        BaseDatos.desconexion(self=self.bd)
