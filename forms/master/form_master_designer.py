@@ -57,13 +57,13 @@ class MasterPanelDesigner:
         bSiguiendo.grid(row=2, column=0, pady=10, sticky='nsew')
         bSiguiendo.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo')))  # Si le das al enter tambien llama a la funcion
 
-        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente'))
-        bPendientes.grid(row=3, column=0, pady=10, sticky='nsew')
-        bPendientes.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente')))  # Si le das al enter tambien llama a la funcion
-
         bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado'))
-        bFinalizados.grid(row=4, column=0, pady=10, sticky='nsew')
+        bFinalizados.grid(row=3, column=0, pady=10, sticky='nsew')
         bFinalizados.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado')))  # Si le das al enter tambien llama a la funcion
+
+        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente'))
+        bPendientes.grid(row=4, column=0, pady=10, sticky='nsew')
+        bPendientes.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente')))  # Si le das al enter tambien llama a la funcion
 
         frame_menu.grid_columnconfigure(0, minsize=220)
         
