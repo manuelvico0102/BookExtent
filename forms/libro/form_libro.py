@@ -20,3 +20,7 @@ class FormLibro(FormLibroDesigner):
         except Exception as e:
             messagebox.showerror(message=str(e), title="Mensaje")
     
+    def guardarCategoria(self, id_usuario, id_libro, id_categoria):
+        self.bd.insertarEnBiblioteca(id_usuario=id_usuario, id_libro=id_libro, id_categoria=id_categoria)
+        messagebox.showinfo(title="Libro añadido", message="Se ha añadido el libro a la sección correspondiente")
+    
