@@ -21,7 +21,7 @@ class FormLibroDesigner:
             self.imagen_libro = BaseDatos.descargarImagen(self=self.bd, id_libro=self.id_libro)
            
 
-            self.ventana = tk.Tk()
+            self.ventana = tk.Toplevel()
             self.ventana.title("Libro")
             self.ventana.geometry('800x600')
             self.ventana.config(bg='#fcfcfc')
@@ -47,21 +47,21 @@ class FormLibroDesigner:
             frame_libro_fill  = tk.Frame(frame_libro, height=50, bd=0, relief=tk.SOLID, bg='black')
             frame_libro_fill.pack(side="bottom", expand=tk.YES, fill=tk.BOTH)
 
-            favorito = tk.Button(frame_libro_fill, text="Guardar en Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=self.guardarFavoritos)
+            favorito = tk.Button(frame_libro_fill, text="Guardar en Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=lambda: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='1'))
             favorito.pack(fill=tk.X, padx=20, pady=10)
-            favorito.bind("<Return>", (lambda event: self.guardarFavoritos()))  # Si le das al enter tambien llama a la funcion
+            favorito.bind("<Return>", (lambda event: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='1')))  # Si le das al enter tambien llama a la funcion
 
-            siguiendo = tk.Button(frame_libro_fill, text="Guardar en Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=self.guardarSiguiendo)
+            siguiendo = tk.Button(frame_libro_fill, text="Guardar en Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=lambda: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='2'))
             siguiendo.pack(fill=tk.X, padx=20, pady=10)
-            siguiendo.bind("<Return>", (lambda event: self.guardarSiguiendo()))  # Si le das al enter tambien llama a la funcion
+            siguiendo.bind("<Return>", (lambda event: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='2')))  # Si le das al enter tambien llama a la funcion
 
-            leido = tk.Button(frame_libro_fill, text="Guardar en Leidos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=self.guardarLeido)
+            leido = tk.Button(frame_libro_fill, text="Guardar en Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=lambda: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='3'))
             leido.pack(fill=tk.X, padx=20, pady=10)
-            leido.bind("<Return>", (lambda event: self.guardarLeido()))  # Si le das al enter tambien llama a la funcion
+            leido.bind("<Return>", (lambda event: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='3')))  # Si le das al enter tambien llama a la funcion
 
-            pendiente = tk.Button(frame_libro_fill, text="Guardar en Pendiente", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=self.guardarPendiente)
+            pendiente = tk.Button(frame_libro_fill, text="Guardar en Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#7ed957", command=lambda: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='4'))
             pendiente.pack(fill=tk.X, padx=20, pady=10)
-            pendiente.bind("<Return>", (lambda event: self.guardarPendiente()))  # Si le das al enter tambien llama a la funcion
+            pendiente.bind("<Return>", (lambda event: self.guardarCategoria(id_usuario=self.id_usuario, id_libro=self.id_libro, id_categoria='4')))  # Si le das al enter tambien llama a la funcion
 
             # Panel derecha
             frame_form = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='#fcfcfc')
@@ -101,16 +101,7 @@ class FormLibroDesigner:
         else: 
             messagebox.showerror(message="El libro no existe", title="Mensaje")
     
-    def guardarFavoritos(self):
-        pass
-
-    def guardarSiguiendo(self):
-        pass
-
-    def guardarLeido(self):
-        pass
-
-    def guardarPendiente(self):
+    def guardarCategoria(self, id_usuario, id_libro, id_categoria):
         pass
 
     def realidadAumentada(self):

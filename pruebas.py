@@ -1,49 +1,45 @@
 import tkinter as tk
+from tkinter import ttk
 
-# Función para establecer el texto en la caja de entrada de usuario
-def set_username_text():
-    username_entry.delete(0, tk.END)
-    username_entry.insert(0, "holaaaaa")
+def abrir_ventana(id_celda, valor_celda):
+    nueva_ventana = tk.Toplevel()
+    nueva_ventana.title("Nueva Ventana")
+    nueva_ventana.geometry("200x200")
+    
+    # Mostrar la información de la celda en la nueva ventana
+    label_id = tk.Label(nueva_ventana, text="ID: " + id_celda)
+    label_id.pack()
+    
+    label_valor = tk.Label(nueva_ventana, text="Valor: " + valor_celda)
+    label_valor.pack()
 
-# Crear la ventana
-root = tk.Tk()
+# Crear la ventana principal
+ventana = tk.Tk()
 
-# Configurar el tamaño de la ventana
-root.geometry("400x300")
+# Crear el Treeview
+tabla = ttk.Treeview(ventana)
+tabla.pack()
 
-# Crear el panel superior negro
-top_panel = tk.Frame(root, bg="black", height=50)
-top_panel.pack(fill="x")
+# Agregar columnas y datos a la tabla (ejemplo)
+tabla["columns"] = ("col1", "col2")
+tabla.column("#0", width=100)
+tabla.column("col1", width=100)
+tabla.column("col2", width=100)
+tabla.heading("#0", text="ID")
+tabla.heading("col1", text="Columna 1")
+tabla.heading("col2", text="Columna 2")
+tabla.insert("", "end", text="1", values=("Valor 1", "Valor 2"))
+tabla.insert("", "end", text="2", values=("Valor 2", "Valor 3"))
+tabla.insert("", "end", text="3", values=("Valor 4", "Valor 5"))
 
-# Crear el menú vertical
-menu_frame = tk.Frame(root, bg="gray")
-menu_frame.pack(side="left", fill="y")
+# Asignar el evento de doble clic a la tabla
+def doble_clic(event):
+    item = tabla.selection()[0]
+    id_celda = tabla.item(item)["text"]
+    valor_celda = tabla.item(item)["values"][0]
+    abrir_ventana(id_celda, valor_celda)
 
-# Crear los botones del menú
-button1 = tk.Button(menu_frame, text="Opción 1", command=set_username_text)
-button1.pack(pady=10)
+tabla.bind("<Double-Button-1>", doble_clic)
 
-button2 = tk.Button(menu_frame, text="Opción 2")
-button2.pack(pady=10)
-
-button3 = tk.Button(menu_frame, text="Opción 3")
-button3.pack(pady=10)
-
-# Crear el panel para ingresar usuario y contraseña
-login_frame = tk.Frame(root, bg="yellow")
-login_frame.pack(side="right", fill="both", expand=True)
-
-username_label = tk.Label(login_frame, text="Usuario:")
-username_label.pack()
-
-username_entry = tk.Entry(login_frame)
-username_entry.pack()
-
-password_label = tk.Label(login_frame, text="Contraseña:")
-password_label.pack()
-
-password_entry = tk.Entry(login_frame, show="*")
-password_entry.pack()
-
-# Iniciar el bucle principal de la ventana
-root.mainloop()
+# Ejecutar el bucle principal de la ventana
+ventana.mainloop()

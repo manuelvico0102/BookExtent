@@ -28,15 +28,13 @@ class FormLogin(FormLoginDesigner):
         return estado 
     
     def userRegister(self):
-        #Aqui tengo que pasarle db para no crear una nueva conexion
-        FormRegister(basedatos=self.bd).mainloop()
+        FormRegister(basedatos=self.bd)
 
     def existeContraseña(self, password, usuario):
         #usuario es una lista de usuarios aunque solo tenga un usuario por lo que 0, y 2 porque es la columna de la contraseña
         b_password = end_dec.decrypt(usuario[0][2])
         if(password == b_password):
            self.ventana.destroy()
-           #Aqui le tengo que pasar la base de datos para no crear una nueva conexion
            MasterPanel(basedatos=self.bd, id_usuario=usuario[0][0])
         else: 
             messagebox.showerror(message="El usuario y la contraseña no coincide", title="Mensaje")

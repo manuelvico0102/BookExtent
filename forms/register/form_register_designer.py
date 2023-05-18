@@ -52,7 +52,7 @@ class FormRegisterDesigner():
         self.confirmacion = ttk.Entry(frame_form_fill, font=('Times', 14))
         self.confirmacion.pack(fill=tk.X, padx=20, pady=10)
         self.confirmacion.config(show="*")
-        self.confirmacion.bind("<Return>", (lambda event: self.verificar()))  # Si le das al enter tambien llama a la funcion
+        self.confirmacion.bind("<Return>", (lambda event: self.register()))  # Si le das al enter tambien llama a la funcion
 
         register = tk.Button(frame_form_fill, text="Registrar", font=('Times', 15, BOLD), fg="#7ed957", bd=0, bg="#fcfcfc", command=self.register)
         register.pack(fill=tk.X, padx=20, pady=20)

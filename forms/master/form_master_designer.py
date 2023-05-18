@@ -5,6 +5,7 @@ from tkinter.font import BOLD
 import util.generic as utl
 from db.BD import BaseDatos
 
+
 class MasterPanelDesigner:
     def __init__(self, basedatos : BaseDatos, id_usuario):
         self.bd = basedatos
@@ -30,9 +31,15 @@ class MasterPanelDesigner:
         self.nombre = self.obtenerNombre(id_usuario=self.id_usuario)
         self.lUsuario = tk.Label(frame_top_left, text=self.nombre, font=('Times', 14), fg="black", bg="gray")
         self.lUsuario.grid(row=0, column=1, sticky='e')
- 
+    
         frame_top_left.grid_columnconfigure(0, minsize=50)
-        frame_top_left.grid_columnconfigure(1,minsize=150)
+        frame_top_left.grid_columnconfigure(1, minsize=150)
+
+        self.categoriaActual = ""
+        self.lcategoria = tk.Label(frame_top, text=self.categoriaActual, font=('Times', 14), fg="black", bg="gray")
+        self.lcategoria.pack(side=LEFT, padx=10)
+
+        
 
         # Panel izquierdo menu
         frame_menu = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='black')
@@ -42,55 +49,64 @@ class MasterPanelDesigner:
         bLibros.grid(row=0, column=0, pady=10, sticky='nsew')
         bLibros.bind("<Return>", (lambda event: self.verLibros()))  # Si le das al enter tambien llama a la funcion
 
-        bFavoritos = tk.Button(frame_menu, text="Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verFavoritos(id_usuario=self.id_usuario))
+        bFavoritos = tk.Button(frame_menu, text="Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Favoritos'))
         bFavoritos.grid(row=1, column=0, pady=10, sticky='nsew')
-        bFavoritos.bind("<Return>", (lambda event: self.verFavoritos(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
+        bFavoritos.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Favoritos')))  # Si le das al enter tambien llama a la funcion
 
-        bSiguiendo = tk.Button(frame_menu, text="Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verSiguiendo(id_usuario=self.id_usuario))
+        bSiguiendo = tk.Button(frame_menu, text="Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo'))
         bSiguiendo.grid(row=2, column=0, pady=10, sticky='nsew')
-        bSiguiendo.bind("<Return>", (lambda event: self.verSiguiendo(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
+        bSiguiendo.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo')))  # Si le das al enter tambien llama a la funcion
 
-        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verPendientes(id_usuario=self.id_usuario))
+        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente'))
         bPendientes.grid(row=3, column=0, pady=10, sticky='nsew')
-        bPendientes.bind("<Return>", (lambda event: self.verPendientes(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
+        bPendientes.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente')))  # Si le das al enter tambien llama a la funcion
 
-        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verFinalizados(id_usuario=self.id_usuario))
+        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado'))
         bFinalizados.grid(row=4, column=0, pady=10, sticky='nsew')
-        bFinalizados.bind("<Return>", (lambda event: self.verFinalizados(id_usuario=self.id_usuario)))  # Si le das al enter tambien llama a la funcion
+        bFinalizados.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado')))  # Si le das al enter tambien llama a la funcion
 
         frame_menu.grid_columnconfigure(0, minsize=220)
         
         # Panel derecha
         frame_form = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='#fcfcfc')
         frame_form.pack(side="right", expand=tk.YES,fill=tk.BOTH)
-
-        self.lista = ttk.Treeview(frame_form, columns=(1,2,3), show="headings", height="8")
+            
+        self.lista = ttk.Treeview(frame_form, columns=(1,2,3), show="headings", height="20")
         estilo = ttk.Style()
         estilo.theme_use("clam")
         estilo.configure("Treeview.Heading", background="#7ed957", relief="flat", foreground="white")
         self.lista.heading(1, text="ID")
         self.lista.heading(2, text="Titulo")
         self.lista.heading(3, text="Autor")
+        self.lista.column(1, anchor=CENTER)
         self.lista.column(2, anchor=CENTER)
-        self.lista.pack(fill=tk.X, padx=20, pady=5)
+        self.lista.column(3, anchor=CENTER)
+        self.lista.pack(fill=tk.X, padx=20, pady=10)
+        self.lista.bind("<Double-Button-1>", self.doble_clic)
         
+        self.buscador = ttk.Entry(frame_form, font=('Times', 14))
+        self.buscador.pack(fill=tk.X, padx=20, pady=10)
+        self.buscador.bind("<Return>", (lambda event: self.buscar()))  # Si le das al enter tambien llama a la funcion
+
+        bBuscar = tk.Button(frame_form, text="Buscar", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.buscar)
+        bBuscar.pack(fill=tk.X, padx=20)
+        bBuscar.bind("<Return>", (lambda event: self.buscar()))  # Si le das al enter tambien llama a la funcion
+
+
         self.ventana.mainloop()
 
     
     def verLibros(self):
         pass
-
-    def verFavoritos(self, id_usuario):
-        pass
-
-    def verSiguiendo(self, id_usuario):
-        pass
-
-    def verPendientes(self, id_usuario):
-        pass
-
-    def verFinalizados(self, id_usuario):
+    
+    def verCategoria(self, id_usuario, categoria):
         pass
 
     def obtenerNombre(self, id_usuario):
+        pass
+
+    def buscar(self):
+        pass
+
+    def doble_clic(event):
         pass

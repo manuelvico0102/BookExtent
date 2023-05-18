@@ -112,8 +112,20 @@ class BaseDatos:
         libros = self.cursor.fetchall()
         return libros
     
+    def obtenerLibros(self, where=""):
+        if(len(where)>0):
+            query = "SELECT libro.id, libro.titulo, libro.autor FROM libro " + where
+        else:
+            query = "SELECT libro.id, libro.titulo, libro.autor FROM libro"
+        
+        self.cursor.execute(query)
+        libros = self.cursor.fetchall()
+        return libros
 
-
+    def insertarEnBiblioteca(self, id_usuario, id_libro, id_categoria):
+        query = "INSERT INTO biblioteca_usuario (id_usuario, id_libro, id_seccion) VALUES (:id_u, :id_l, :id_c)"
+        self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
+        self.connection.commit()
 
 
 """
