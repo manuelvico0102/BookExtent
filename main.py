@@ -10,3 +10,6 @@ FormLogin(basedatos=bd)
 
 # Se cierra conexion a la base de datos
 BaseDatos.desconexion(self=bd)
+
+
+

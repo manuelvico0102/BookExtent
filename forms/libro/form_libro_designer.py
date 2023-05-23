@@ -30,8 +30,8 @@ class FormLibroDesigner:
             
 
             # Pasar la imagen de CV2 --> PIL --> Imagen compatible con tkinter || Cambiar esto por una funcion que englobe las dos
-            self.imagen_libro = utl.convertirCV2aPIL(self.imagen_libro)
-            portada = utl.imagenResize(self.imagen_libro, (200, 300))
+            self.imagen = utl.convertirCV2aPIL(self.imagen_libro)
+            portada = utl.imagenResize(self.imagen, (200, 300))
 
             # Panel izquierda logo
             frame_libro = tk.Frame(self.ventana, bd=0, width=300, relief=tk.SOLID, bg='black')
@@ -89,9 +89,9 @@ class FormLibroDesigner:
             etiqueta_descripcion_texto.insert(tk.END, self.desc_libro)
             etiqueta_descripcion_texto.configure(state='disabled')
 
-            ar = tk.Button(frame_form_fill, text="Realidad Aumentada", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.realidadAumentada)
+            ar = tk.Button(frame_form_fill, text="Realidad Aumentada", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black",  command=lambda: self.realidadAumentada(imagen=self.imagen_libro))
             ar.pack(fill=tk.X, padx=20, pady=5)
-            ar.bind("<Return>", (lambda event: self.realidadAumentada()))  # Si le das al enter tambien llama a la funcion
+            ar.bind("<Return>", (lambda event: self.realidadAumentada(imagen=self.imagen_libro)))  # Si le das al enter tambien llama a la funcion
             
             b_imagen = tk.Button(frame_form_fill, text="Cambiar imagen", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.subirImagen)
             b_imagen.pack(fill=tk.X, padx=20, pady=5)
@@ -104,7 +104,7 @@ class FormLibroDesigner:
     def guardarCategoria(self, id_usuario, id_libro, id_categoria):
         pass
 
-    def realidadAumentada(self):
+    def realidadAumentada(self, imagen):
         pass
 
     def subirImagen(self):

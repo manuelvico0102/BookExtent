@@ -42,39 +42,40 @@ class MasterPanelDesigner:
         
 
         # Panel izquierdo menu
-        frame_menu = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='black')
+        frame_menu = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='#2D2D2D')
         frame_menu.pack(side="left", expand=tk.NO,fill=tk.BOTH)
         
-        bLibros = tk.Button(frame_menu, text="Libros", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=self.verLibros)
+        bLibros = tk.Button(frame_menu, text="Libros", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#2D2D2D", anchor="w", padx=20, command=self.verLibros)
         bLibros.grid(row=0, column=0, pady=10, sticky='nsew')
         bLibros.bind("<Return>", (lambda event: self.verLibros()))  # Si le das al enter tambien llama a la funcion
 
-        bFavoritos = tk.Button(frame_menu, text="Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Favoritos'))
+        bFavoritos = tk.Button(frame_menu, text="Favoritos", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#2D2D2D", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Favoritos'))
         bFavoritos.grid(row=1, column=0, pady=10, sticky='nsew')
         bFavoritos.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Favoritos')))  # Si le das al enter tambien llama a la funcion
 
-        bSiguiendo = tk.Button(frame_menu, text="Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo'))
+        bSiguiendo = tk.Button(frame_menu, text="Siguiendo", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#2D2D2D", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo'))
         bSiguiendo.grid(row=2, column=0, pady=10, sticky='nsew')
         bSiguiendo.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Siguiendo')))  # Si le das al enter tambien llama a la funcion
 
-        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado'))
+        bFinalizados = tk.Button(frame_menu, text="Finalizados", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#2D2D2D", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado'))
         bFinalizados.grid(row=3, column=0, pady=10, sticky='nsew')
         bFinalizados.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Finalizado')))  # Si le das al enter tambien llama a la funcion
 
-        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente'))
+        bPendientes = tk.Button(frame_menu, text="Pendientes", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="#2D2D2D", anchor="w", padx=20, command=lambda: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente'))
         bPendientes.grid(row=4, column=0, pady=10, sticky='nsew')
         bPendientes.bind("<Return>", (lambda event: self.verCategoria(id_usuario=self.id_usuario, categoria='Pendiente')))  # Si le das al enter tambien llama a la funcion
 
         frame_menu.grid_columnconfigure(0, minsize=220)
         
         # Panel derecha
-        frame_form = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='#fcfcfc')
+        frame_form = tk.Frame(self.ventana, bd=0, relief=tk.SOLID, bg='black')
         frame_form.pack(side="right", expand=tk.YES,fill=tk.BOTH)
             
         self.lista = ttk.Treeview(frame_form, columns=(1,2,3), show="headings", height="20")
         estilo = ttk.Style()
         estilo.theme_use("clam")
         estilo.configure("Treeview.Heading", background="#7ed957", relief="flat", foreground="white")
+
         self.lista.heading(1, text="ID")
         self.lista.heading(2, text="Titulo")
         self.lista.heading(3, text="Autor")
@@ -82,13 +83,17 @@ class MasterPanelDesigner:
         self.lista.column(2, anchor=CENTER)
         self.lista.column(3, anchor=CENTER)
         self.lista.pack(fill=tk.X, padx=20, pady=10)
+        """self.lista.tag_configure("FilaPar.Treeview", background="#000000", foreground="white")
+        self.lista.tag_configure("FilaImpar.Treeview", background="#2D2D2D", foreground="white")
+        if(len(self.lista.get_children()) == 0):
+            self.llenarTablaVacia()"""
         self.lista.bind("<Double-Button-1>", self.doble_clic)
         
         self.buscador = ttk.Entry(frame_form, font=('Times', 14))
         self.buscador.pack(fill=tk.X, padx=20, pady=10)
         self.buscador.bind("<Return>", (lambda event: self.buscar()))  # Si le das al enter tambien llama a la funcion
 
-        bBuscar = tk.Button(frame_form, text="Buscar", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.buscar)
+        bBuscar = tk.Button(frame_form, text="Buscar", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="gray", command=self.buscar)
         bBuscar.pack(fill=tk.X, padx=20)
         bBuscar.bind("<Return>", (lambda event: self.buscar()))  # Si le das al enter tambien llama a la funcion
 
@@ -109,4 +114,7 @@ class MasterPanelDesigner:
         pass
 
     def doble_clic(event):
+        pass
+
+    def llenarTablaVacia(self):
         pass

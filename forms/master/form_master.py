@@ -14,8 +14,12 @@ class MasterPanel(MasterPanelDesigner):
         self.lcategoria.config(text=self.categoriaActual)
         self.lista.delete(*self.lista.get_children())
         libros = self.bd.obtenerLibros()
+        
+        contador = 0
         for i in libros:
-            self.lista.insert('', 'end', values=i)
+            etiqueta = "FilaPar.Treeview" if contador % 2 == 0 else "FilaImpar.Treeview"
+            self.lista.insert('', 'end', values=i, tags=(etiqueta,))
+            contador += 1
     
     def verCategoria(self, id_usuario, categoria):
         self.categoriaActual = categoria
@@ -43,7 +47,14 @@ class MasterPanel(MasterPanelDesigner):
         if(seleccion):
             item = self.lista.item(seleccion[0])
             id_celda = item['values'][0]
-            FormLibro(basedatos=self.bd, id_libro=str(id_celda), id_usuario=str(self.id_usuario))
+            FormLibro(basedatos=self.bd, id_libro=str(id_celda), id_usuario=str(self.id_usuario))     
+    
+    def llenarTablaVacia(self):
+        contador = 0
+        for i in 20:
+            etiqueta = "FilaPar.Treeview" if contador % 2 == 0 else "FilaImpar.Treeview"
+            self.lista.insert('', 'end', values=["","",""], tags=(etiqueta,))
+            contador += 1 
 
 
 

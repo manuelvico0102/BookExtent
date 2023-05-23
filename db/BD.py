@@ -95,10 +95,8 @@ class BaseDatos:
         else:
             img = cv2.imread('./imagenes/BE_sinfondo.png')
         return img
-        """
-        cv2.imshow("Imagen", img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()"""
+        
+        
     
     def obtenerLibros(self):
         query = "SELECT libro.id, libro.titulo, libro.autor FROM libro"
@@ -126,6 +124,18 @@ class BaseDatos:
         query = "INSERT INTO biblioteca_usuario (id_usuario, id_libro, id_seccion) VALUES (:id_u, :id_l, :id_c)"
         self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
         self.connection.commit()
+
+    def existeEnBiblioteca(self, id_usuario, id_libro, id_categoria):
+        query = "SELECT COUNT(*) FROM biblioteca_usuario WHERE id_usuario = :id_u AND id_libro = :id_l AND id_seccion = :id_c"
+        self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
+        resultado = self.cursor.fetchone()
+        
+        existe = False
+        if(resultado[0] > 0):
+            existe = True
+        
+        return existe
+
 
 
 """
