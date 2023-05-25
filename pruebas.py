@@ -1,45 +1,78 @@
-import tkinter as tk
-from tkinter import ttk
+import cv2
+import numpy as np
+import sys
+import os
 
-def abrir_ventana(id_celda, valor_celda):
-    nueva_ventana = tk.Toplevel()
-    nueva_ventana.title("Nueva Ventana")
-    nueva_ventana.geometry("200x200")
+imagen = cv2.imread("imagenes\ElUltimoDeseo.jpeg")
+
+if os.path.exists('camara.py'):
+    import camara
+else:
+    print("Es necesario realizar la calibración de la cámara")
+    exit()
+
+DIC = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+parametros = cv2.aruco.DetectorParameters()
+
+cap = cv2.VideoCapture(0)
+if cap.isOpened():
+    hframe = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    wframe = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    print("Tamaño del frame de la cámara: ", wframe, "x", hframe)
+
+    matrix, roi = cv2.getOptimalNewCameraMatrix(camara.cameraMatrix, camara.distCoeffs, (wframe,hframe), 1, (wframe,hframe))
+    roi_x, roi_y, roi_w, roi_h = roi
+
+    final = False
+    while not final:
+        ret, framebgr = cap.read()
+        if ret:
+            # Aquí procesamos el frame
+            framerectificado = cv2.undistort(framebgr, camara.cameraMatrix, camara.distCoeffs, None, matrix)
+            framerecortado = framerectificado[roi_y : roi_y + roi_h, roi_x : roi_x + roi_w]
+
+            (corners, ids, rejected) = cv2.aruco.detectMarkers(framerecortado, DIC, parameters=parametros)
     
-    # Mostrar la información de la celda en la nueva ventana
-    label_id = tk.Label(nueva_ventana, text="ID: " + id_celda)
-    label_id.pack()
-    
-    label_valor = tk.Label(nueva_ventana, text="Valor: " + valor_celda)
-    label_valor.pack()
+            if np.all(ids != None):    
+                #aruco = cv2.aruco.drawDetectedMarkers(framerecortado, corners)
 
-# Crear la ventana principal
-ventana = tk.Tk()
+                #Guardamos las esquinas del marcador
+                c1 = (corners[0][0][0][0], corners[0][0][0][1])
+                c2 = (corners[0][0][1][0], corners[0][0][1][1])
+                c3 = (corners[0][0][2][0], corners[0][0][2][1])
+                c4 = (corners[0][0][3][0], corners[0][0][3][1])
 
-# Crear el Treeview
-tabla = ttk.Treeview(ventana)
-tabla.pack()
+                #Creamos una copiar para luego superponer dos imagenes
+                copy = framerecortado
+                #Extraemos el tamaño de la imagen
+                tamaño = imagen.shape
+                #Organizamos las coordenadas del aruco en una matriz
+                puntos_aruco = np.array([c1,c2,c3,c4])
+                
+                #Organizamos las coordenadas de la imagen en una matriz
+                puntos_imagen = np.array([
+                    [0,0],
+                    [tamaño[1] - 1, 0],
+                    [tamaño[1] - 1, tamaño[0] - 1],
+                    [0, tamaño[0] - 1]
+                ], dtype= float)
 
-# Agregar columnas y datos a la tabla (ejemplo)
-tabla["columns"] = ("col1", "col2")
-tabla.column("#0", width=100)
-tabla.column("col1", width=100)
-tabla.column("col2", width=100)
-tabla.heading("#0", text="ID")
-tabla.heading("col1", text="Columna 1")
-tabla.heading("col2", text="Columna 2")
-tabla.insert("", "end", text="1", values=("Valor 1", "Valor 2"))
-tabla.insert("", "end", text="2", values=("Valor 2", "Valor 3"))
-tabla.insert("", "end", text="3", values=("Valor 4", "Valor 5"))
+                #Realizamos la superposición de la imagen (Homografia)
+                h, estado = cv2.findHomography(puntos_imagen, puntos_aruco)
 
-# Asignar el evento de doble clic a la tabla
-def doble_clic(event):
-    item = tabla.selection()[0]
-    id_celda = tabla.item(item)["text"]
-    valor_celda = tabla.item(item)["values"][0]
-    abrir_ventana(id_celda, valor_celda)
+                #Realizamos la transformación de perspectiva
+                perspectiva = cv2.warpPerspective(imagen, h, (copy.shape[1], copy.shape[0]))
+                cv2.fillConvexPoly(copy, puntos_aruco.astype(int), 0, 16)
+                copy = copy + perspectiva
 
-tabla.bind("<Double-Button-1>", doble_clic)
 
-# Ejecutar el bucle principal de la ventana
-ventana.mainloop()
+                cv2.imshow("RECORTADO", copy)
+            else:
+                cv2.imshow("RECORTADO", framerecortado)
+                    
+            if cv2.waitKey(1) == ord(' '):
+                final = True
+        else:
+            final = True
+else:
+    print("No se pudo acceder a la cámara.")

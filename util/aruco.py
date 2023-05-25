@@ -34,14 +34,15 @@ def proyectar(imagen):
                 (corners, ids, rejected) = cv2.aruco.detectMarkers(framerecortado, DIC, parameters=parametros)
                 if len(corners)>0:
                     for i in range(len(corners)):
-                        # Obtener las dimensiones del marcador detectado
+                        """# Obtener las dimensiones del marcador detectado
                         x, y, w, h = cv2.boundingRect(corners[i])
 
                         # Ajustar la imagen al tamaño del marcador
                         imagen_resized = cv2.resize(imagen, (w, h))
 
                         # Superponer la imagen en el fotograma
-                        framerecortado[y:y + h, x:x + w] = imagen_resized
+                        framerecortado[y:y + h, x:x + w] = imagen_resized"""
+                
 
                 cv2.imshow("RECORTADO", framerecortado)
                 if cv2.waitKey(1) == ord(' '):

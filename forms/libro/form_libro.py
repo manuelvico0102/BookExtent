@@ -3,6 +3,7 @@ from db.BD import BaseDatos
 from forms.libro.form_libro_designer import FormLibroDesigner
 from tkinter import filedialog
 import util.aruco as ar
+import util.speech as speech
 
 class FormLibro(FormLibroDesigner):
     def __init__(self, basedatos : BaseDatos, id_libro=None, id_usuario=None):
@@ -30,3 +31,6 @@ class FormLibro(FormLibroDesigner):
     
     def realidadAumentada(self, imagen):
         ar.proyectar(imagen)
+
+    def leerDescripcion(self, texto):
+        speech.texto_a_audio(texto=texto)

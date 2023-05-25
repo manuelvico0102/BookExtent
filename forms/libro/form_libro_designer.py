@@ -92,7 +92,7 @@ class FormLibroDesigner:
             ar = tk.Button(frame_form_fill, text="Realidad Aumentada", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black",  command=lambda: self.realidadAumentada(imagen=self.imagen_libro))
             ar.pack(fill=tk.X, padx=20, pady=5)
             ar.bind("<Return>", (lambda event: self.realidadAumentada(imagen=self.imagen_libro)))  # Si le das al enter tambien llama a la funcion
-            
+
             b_imagen = tk.Button(frame_form_fill, text="Cambiar imagen", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.subirImagen)
             b_imagen.pack(fill=tk.X, padx=20, pady=5)
             b_imagen.bind("<Return>", (lambda event: self.subirImagen()))  # Si le das al enter tambien llama a la funcion
@@ -108,4 +108,7 @@ class FormLibroDesigner:
         pass
 
     def subirImagen(self):
+        pass
+
+    def leerDescripcion(self, texto):
         pass
