@@ -125,6 +125,12 @@ class BaseDatos:
         self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
         self.connection.commit()
 
+    def eliminarDeBiblioteca(self, id_usuario, id_libro, id_categoria):
+        query = "DELETE FROM biblioteca_usuario WHERE id_usuario = :id_u AND id_libro = :id_l AND id_seccion = :id_c"
+        self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
+        self.connection.commit()
+
+
     def existeEnBiblioteca(self, id_usuario, id_libro, id_categoria):
         query = "SELECT COUNT(*) FROM biblioteca_usuario WHERE id_usuario = :id_u AND id_libro = :id_l AND id_seccion = :id_c"
         self.cursor.execute(query, {"id_u": id_usuario, "id_l": id_libro, "id_c": id_categoria})
@@ -136,6 +142,14 @@ class BaseDatos:
         
         return existe
 
+    def subirImagenCodificada(self, idusuario, cod):
+        query = "UPDATE usuario SET imagen_codificada = :blobImagen WHERE id = :id"
+        values = {"blobImagen": cod, "id": idusuario}
+
+        # Ejecutar la consulta SQL
+        self.cursor.execute(query, values)
+        self.connection.commit()
+        
 
 
 """

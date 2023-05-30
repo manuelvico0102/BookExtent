@@ -30,21 +30,45 @@ def proyectar(imagen):
                 framerectificado = cv2.undistort(framebgr, camara.cameraMatrix, camara.distCoeffs, None, matrix)
                 framerecortado = framerectificado[roi_y : roi_y + roi_h, roi_x : roi_x + roi_w]
 
-
                 (corners, ids, rejected) = cv2.aruco.detectMarkers(framerecortado, DIC, parameters=parametros)
-                if len(corners)>0:
-                    for i in range(len(corners)):
-                        """# Obtener las dimensiones del marcador detectado
-                        x, y, w, h = cv2.boundingRect(corners[i])
+        
+                if np.all(ids != None):    
+                    #aruco = cv2.aruco.drawDetectedMarkers(framerecortado, corners)
 
-                        # Ajustar la imagen al tamaño del marcador
-                        imagen_resized = cv2.resize(imagen, (w, h))
+                    #Guardamos las esquinas del marcador
+                    c1 = (corners[0][0][0][0], corners[0][0][0][1])
+                    c2 = (corners[0][0][1][0], corners[0][0][1][1])
+                    c3 = (corners[0][0][2][0], corners[0][0][2][1])
+                    c4 = (corners[0][0][3][0], corners[0][0][3][1])
 
-                        # Superponer la imagen en el fotograma
-                        framerecortado[y:y + h, x:x + w] = imagen_resized"""
-                
+                    #Creamos una copiar para luego superponer dos imagenes
+                    copy = framerecortado
+                    #Extraemos el tamaño de la imagen
+                    tamaño = imagen.shape
+                    #Organizamos las coordenadas del aruco en una matriz
+                    puntos_aruco = np.array([c1,c2,c3,c4])
+                    
+                    #Organizamos las coordenadas de la imagen en una matriz
+                    puntos_imagen = np.array([
+                        [0,0],
+                        [tamaño[1] - 1, 0],
+                        [tamaño[1] - 1, tamaño[0] - 1],
+                        [0, tamaño[0] - 1]
+                    ], dtype= float)
 
-                cv2.imshow("RECORTADO", framerecortado)
+                    #Realizamos la superposición de la imagen (Homografia)
+                    h, estado = cv2.findHomography(puntos_imagen, puntos_aruco)
+
+                    #Realizamos la transformación de perspectiva
+                    perspectiva = cv2.warpPerspective(imagen, h, (copy.shape[1], copy.shape[0]))
+                    cv2.fillConvexPoly(copy, puntos_aruco.astype(int), 0, 16)
+                    copy = copy + perspectiva
+
+
+                    cv2.imshow("RECORTADO", copy)
+                else:
+                    cv2.imshow("RECORTADO", framerecortado)
+                        
                 if cv2.waitKey(1) == ord(' '):
                     final = True
             else:

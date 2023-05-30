@@ -1,8 +1,17 @@
-si el libro ya esta en la categoria y se le da de nuevo al boton eliminara el libro de esa categoria
+Usar una hebra para la camara
 
-Hacer que la camara se cierre al darle a la x y no esperar a darle al espacio y luego a la x
+Usar una hebra para el microfono
+    Abrir un enlace en el navegador al decir musica
+    Moverse por las distintas ventanas
+    Moverse por las distintas secciones
+    Hacer uso de realidad aumentada
 
 Añadir el reconocimiento de persona al inicio de sesión
+    Hacer una foto
+    Codificar la foto y subirla a la base de datos
+    -----------------------------------------------
+    Descargar todas las codificaciones
+    comparar lo que ve la webcam con las fotos codificadas
 
 Cuando este terminado todo, borrar las librerias sobrantes en algunos archivos
 

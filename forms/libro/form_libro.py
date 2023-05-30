@@ -27,6 +27,7 @@ class FormLibro(FormLibroDesigner):
             self.bd.insertarEnBiblioteca(id_usuario=id_usuario, id_libro=id_libro, id_categoria=id_categoria)
             messagebox.showinfo(title="Libro añadido", message="Se ha añadido el libro a la sección correspondiente")
         else:
+            self.bd.eliminarDeBiblioteca(id_usuario=id_usuario, id_libro=id_libro, id_categoria=id_categoria)
             messagebox.showinfo(title="Libro eliminado", message="Se ha eliminado el libro de la sección correspondiente")
     
     def realidadAumentada(self, imagen):
