@@ -2,8 +2,10 @@ from tkinter import messagebox
 from db.BD import BaseDatos
 from forms.libro.form_libro_designer import FormLibroDesigner
 from tkinter import filedialog
+# import util.aruco as ar
 import util.aruco as ar
 import util.speech as speech
+from threading import Thread
 
 class FormLibro(FormLibroDesigner):
     def __init__(self, basedatos : BaseDatos, id_libro=None, id_usuario=None):
@@ -31,7 +33,11 @@ class FormLibro(FormLibroDesigner):
             messagebox.showinfo(title="Libro eliminado", message="Se ha eliminado el libro de la sección correspondiente")
     
     def realidadAumentada(self, imagen):
-        ar.proyectar(imagen)
+        print(ar.camaraEjecutandose)
+        if not ar.camaraEjecutandose:
+            ar.camaraEjecutandose = True
+            h1 = Thread(target=ar.proyectar, args=[imagen], daemon=True)
+            h1.start()
 
     def leerDescripcion(self, texto):
         speech.texto_a_audio(texto=texto)

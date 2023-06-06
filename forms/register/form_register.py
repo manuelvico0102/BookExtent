@@ -3,26 +3,30 @@ from db.BD import BaseDatos
 from tkinter import messagebox
 import util.encoding_decoding as end_dec
 import tkinter as tk
+from forms.master.form_master import MasterPanel
+from util.reconocimiento import capturarFoto, CrearUsuarioConFoto
 
 class FormRegister(FormRegisterDesigner):
     def __init__(self, basedatos : BaseDatos):
-        #self.BaseDatos = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-        #BaseDatos.conexion(self=self.BaseDatos)
         self.bd = basedatos
         super().__init__(basedatos=self.bd)
 
     def register(self):
-        #usuario_db = BaseDatos.obtenerUsuario(self=self.BaseDatos, username=self.usuario.get())
         usuario_db = self.bd.obtenerUsuario(username=self.usuario.get())
         if not (self.existeUsuario(usuario_db)):
             if(self.coincideContrasenia()):
                 contra = end_dec.encrypted(self.password.get())
                 usu = self.usuario.get()
-                #BaseDatos.insertarUsuario(self=self.BaseDatos, username=usu, password=contra)
-                self.bd.insertarUsuario(username=usu, password=contra)
-                messagebox.showinfo(message="Se registro el usuario correctamente", title="Mensaje")
-                self.ventana.destroy()
-                #BaseDatos.desconexion(self=self.BaseDatos)
+                imagen = capturarFoto()
+                #Faltaria hacer una comprobacion de que la foto es una cara
+                if(CrearUsuarioConFoto(bd=self.bd, usuario=usu, contra=contra, img=imagen)):
+                    #self.bd.insertarUsuario(username=usu, password=contra)
+                    messagebox.showinfo(message="Se registro el usuario correctamente", title="Mensaje")
+                    self.ventana.destroy()
+                    usuario_db = self.bd.obtenerUsuario(username=usu)
+                    MasterPanel(basedatos=self.bd, id_usuario=usuario_db[0][0])
+                else:
+                    messagebox.showerror(message="No se ha detectado ninguna cara", title="Mensaje")
 
     def coincideContrasenia(self):
         estado: bool = True

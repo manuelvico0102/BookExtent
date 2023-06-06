@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import sys
 import os
-
+camaraEjecutandose = False
 def proyectar(imagen):
     if os.path.exists('camara.py'):
         import camara
@@ -71,7 +71,12 @@ def proyectar(imagen):
                         
                 if cv2.waitKey(1) == ord(' '):
                     final = True
+                    global camaraEjecutandose
+                    camaraEjecutandose = False
             else:
                 final = True
+        
+        cap.release()
+        cv2.destroyAllWindows()
     else:
         print("No se pudo acceder a la cámara.")

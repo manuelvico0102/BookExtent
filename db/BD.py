@@ -149,7 +149,30 @@ class BaseDatos:
         # Ejecutar la consulta SQL
         self.cursor.execute(query, values)
         self.connection.commit()
-        
+    
+    def obtenerTodasCodificaciones(self):
+        query = "SELECT id, NOMBRE_USUARIO, imagen_codificada FROM usuario"
+        self.cursor.execute(query)
+        codificaciones = self.cursor.fetchall()
+        ids = []
+        nombres = []
+        rostroscod = []
+        for id, nombre, imagen_codificada in codificaciones:
+            # Leer los datos de la columna imagen_codificada
+            buffer = imagen_codificada.read()
+
+            # Convertir los datos en un arreglo NumPy
+            codificacion = np.frombuffer(buffer, dtype=np.float64)
+
+            ids.append(id)
+            nombres.append(nombre)
+            rostroscod.append(codificacion)
+
+        return ids, nombres, rostroscod
+    
+    def insertarUsuarioFoto(self, username, password, imagen):
+        self.cursor.execute("INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO, IMAGEN_CODIFICADA) VALUES (:usuario, :password, :imagen)", usuario=username, password=password, imagen=imagen)
+        self.connection.commit()
 
 
 """

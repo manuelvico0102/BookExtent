@@ -2,11 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.font import BOLD
 import util.generic as utl
-
+from threading import Thread
+import cv2
 
 class FormLoginDesigner:
 
-    def __init__(self, basedatos):
+    def __init__(self, basedatos):   
         self.ventana = tk.Tk()
         self.ventana.title("Inicio de sesión")
         self.ventana.geometry('800x500')
@@ -48,13 +49,17 @@ class FormLoginDesigner:
         self.password.config(show="*")
         self.password.bind("<Return>", (lambda event: self.verificar()))  # Si le das al enter tambien llama a la funcion
 
+        faceid = tk.Button(frame_form_fill, text="Face ID", font=('Times', 10, BOLD), fg="black", bd=0, bg="#fcfcfc", command=self.inicioFaceid)
+        faceid.pack(fill=tk.X, padx=20, pady=0)
+        faceid.bind("<Return>", (lambda event: self.inicioFaceid()))  # Si le das al enter tambien llama a la funcion
+
         inicio = tk.Button(frame_form_fill, text="Iniciar Sesión", font=('Times', 15, BOLD), fg="#fff", bd=0, bg="black", command=self.verificar)
         inicio.pack(fill=tk.X, padx=20, pady=20)
         inicio.bind("<Return>", (lambda event: self.verificar()))  # Si le das al enter tambien llama a la funcion
 
-        inicio = tk.Button(frame_form_fill, text="Registrar usuario", font=('Times', 15, BOLD), fg="black", bd=0, bg="#fcfcfc", command=self.userRegister)
-        inicio.pack(fill=tk.X, padx=20, pady=20)
-        inicio.bind("<Return>", (lambda event: self.userRegister()))  # Si le das al enter tambien llama a la funcion
+        registro = tk.Button(frame_form_fill, text="Registrar usuario", font=('Times', 15, BOLD), fg="black", bd=0, bg="#fcfcfc", command=self.userRegister)
+        registro.pack(fill=tk.X, padx=20, pady=20)
+        registro.bind("<Return>", (lambda event: self.userRegister()))  # Si le das al enter tambien llama a la funcion
 
         self.ventana.mainloop()
     
@@ -62,4 +67,7 @@ class FormLoginDesigner:
         pass
 
     def userRegister(self):
+        pass
+
+    def inicioFaceid(self):
         pass

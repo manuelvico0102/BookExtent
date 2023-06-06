@@ -4,19 +4,18 @@ from forms.login.form_login_designer import FormLoginDesigner
 from db.BD import BaseDatos
 import util.encoding_decoding as end_dec
 from forms.register.form_register import FormRegister
-
+from util.reconocimiento import reconocimientoFacial
+import cv2
 
 class FormLogin(FormLoginDesigner):
 
     def __init__(self, basedatos : BaseDatos):
-        #self.BaseDatos = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-        #BaseDatos.conexion(self=self.BaseDatos)
+        self.ventana = None
         self.bd = basedatos
         super().__init__(basedatos=self.bd)
     
     def verificar(self):
         usuario_db = self.bd.obtenerUsuario(username=self.usuario.get())
-        #usuario_db = BaseDatos.obtenerUsuario(self=self.BaseDatos, username=self.usuario.get())
         if(self.existeUsuario(usuario_db)):
             self.existeContraseña(self.password.get(), usuario_db)
     
@@ -28,6 +27,7 @@ class FormLogin(FormLoginDesigner):
         return estado 
     
     def userRegister(self):
+        self.ventana.destroy()
         FormRegister(basedatos=self.bd)
 
     def existeContraseña(self, password, usuario):
@@ -38,3 +38,16 @@ class FormLogin(FormLoginDesigner):
            MasterPanel(basedatos=self.bd, id_usuario=usuario[0][0])
         else: 
             messagebox.showerror(message="El usuario y la contraseña no coincide", title="Mensaje")
+    
+    def inicioFaceid(self):
+        ids, nombres, rostrocod = self.bd.obtenerTodasCodificaciones()
+        id = reconocimientoFacial(ids, rostrocod)
+        
+        if id is not None:
+            if self.ventana is not None:
+                self.ventana.destroy()
+            MasterPanel(basedatos=self.bd, id_usuario=id)
+        else: 
+            cv2.destroyAllWindows()
+        
+        

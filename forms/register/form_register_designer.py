@@ -8,7 +8,7 @@ import util.generic as utl
 class FormRegisterDesigner():
 
     def __init__(self, basedatos):
-        self.ventana = tk.Toplevel()
+        self.ventana = tk.Tk()
         self.ventana.title("Registro")
         self.ventana.config(bg='#fcfcfc')
         self.ventana.resizable(width=0, height=0)   
@@ -54,7 +54,7 @@ class FormRegisterDesigner():
         self.confirmacion.config(show="*")
         self.confirmacion.bind("<Return>", (lambda event: self.register()))  # Si le das al enter tambien llama a la funcion
 
-        register = tk.Button(frame_form_fill, text="Registrar", font=('Times', 15, BOLD), fg="#7ed957", bd=0, bg="#fcfcfc", command=self.register)
+        register = tk.Button(frame_form_fill, text="Tomar foto y Registrar", font=('Times', 15, BOLD), fg="#7ed957", bd=0, bg="#fcfcfc", command=self.register)
         register.pack(fill=tk.X, padx=20, pady=20)
         register.bind("<Return>", (lambda event: self.register()))  # Si le das al enter tambien llama a la funcion
 
@@ -62,3 +62,5 @@ class FormRegisterDesigner():
     
     def register():
         pass
+
+
