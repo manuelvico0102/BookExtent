@@ -95,8 +95,6 @@ class BaseDatos:
         else:
             img = cv2.imread('./imagenes/BE_sinfondo.png')
         return img
-        
-        
     
     def obtenerLibros(self):
         query = "SELECT libro.id, libro.titulo, libro.autor FROM libro"
@@ -174,23 +172,3 @@ class BaseDatos:
         self.cursor.execute("INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO, IMAGEN_CODIFICADA) VALUES (:usuario, :password, :imagen)", usuario=username, password=password, imagen=imagen)
         self.connection.commit()
 
-
-"""
-BaseDatos = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-BaseDatos.conexion()
-#BaseDatos.insertarUsuario(username='paco', password='12345')
-
-#libro = BaseDatos.obtenerLibro(id_libro='12')
-#libros = BaseDatos.obtenerLibrosFavoritos(id_usuario='5')
-libros = BaseDatos.obtenerLibros()
-for i in libros:
-    print(i)
-#if(libro):
-#   print(BaseDatos.obtenerDescripcion(id_libro='12')) 
-
-
-#BaseDatos.cargarImagen(ruta="LaSangreDeLosElfos.jpeg", id_libro="3")
-#BaseDatos.mostrar_tabla(tabla="libros")
-#BaseDatos.descargarImagen(id_libro="1")
-
-BaseDatos.desconexion()"""

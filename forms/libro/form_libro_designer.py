@@ -3,6 +3,9 @@ from tkinter import messagebox
 from tkinter.font import BOLD
 import util.generic as utl
 from db.BD import BaseDatos
+from threading import Thread, Event, Lock
+import util.speech as speech
+
 
 class FormLibroDesigner:
 
@@ -10,7 +13,8 @@ class FormLibroDesigner:
         self.id_libro = id_libro
         self.bd = basedatos
         self.id_usuario = id_usuario
-    
+        self.comando_ejecutandose = False   # Para que no se ejecute el comando varias veces
+        self.eventoStop = Event()           # Evento para parar el hilo
         if(BaseDatos.existeLibro(self=self.bd, id_libro=self.id_libro)):
             #Traemos el libro || cambiar esto por una funcion
             self.libro = BaseDatos.obtenerLibro(self=self.bd, id_libro=self.id_libro)
@@ -20,6 +24,7 @@ class FormLibroDesigner:
             self.desc_libro = self.desc_libro[0][0]
             self.imagen_libro = BaseDatos.descargarImagen(self=self.bd, id_libro=self.id_libro)
            
+            speech.inicio_reconocimiento_voz(self=self)
 
             self.ventana = tk.Toplevel()
             self.ventana.title("Libro")
@@ -97,9 +102,10 @@ class FormLibroDesigner:
             b_imagen.pack(fill=tk.X, padx=20, pady=5)
             b_imagen.bind("<Return>", (lambda event: self.subirImagen()))  # Si le das al enter tambien llama a la funcion
 
+            self.ventana.protocol("WM_DELETE_WINDOW", self.cerrar_ventana)
             self.ventana.mainloop()
         else: 
-            messagebox.showerror(message="El libro no existe", title="Mensaje")
+            messagebox.showerror(master=self.ventana, message="El libro no existe", title="Mensaje")
     
     def guardarCategoria(self, id_usuario, id_libro, id_categoria):
         pass
@@ -112,3 +118,14 @@ class FormLibroDesigner:
 
     def leerDescripcion(self, texto):
         pass
+
+    def cerrar_ventana(self):
+        speech.cerrar_ventana(self=self)
+        self.ventana.destroy()
+
+    """def inicio_reconocimiento_voz(self):
+        pass
+
+    
+"""
+

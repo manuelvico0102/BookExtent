@@ -76,7 +76,7 @@ class MasterPanelDesigner:
         estilo.theme_use("clam")
         estilo.configure("Treeview.Heading", background="#7ed957", relief="flat", foreground="white")
 
-        self.lista.heading(1, text="ID")
+        self.lista.heading(1, text="Nº Libro")
         self.lista.heading(2, text="Titulo")
         self.lista.heading(3, text="Autor")
         self.lista.column(1, anchor=CENTER)
@@ -114,7 +114,4 @@ class MasterPanelDesigner:
         pass
 
     def doble_clic(event):
-        pass
-
-    def llenarTablaVacia(self):
         pass

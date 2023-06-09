@@ -34,7 +34,8 @@ class MasterPanel(MasterPanelDesigner):
         self.lcategoria.config(text=self.categoriaActual)
         where = " where 1=1 "
         if(len(self.buscador.get()) > 0):
-            where = where + " and titulo LIKE '%" + self.buscador.get().upper()+"%' "
+            texto = self.buscador.get().upper()
+            where = where + " and (titulo LIKE '%" + texto +"%' or autor LIKE '%" + texto +"%') "
 
         self.lista.delete(*self.lista.get_children())
         libros = self.bd.obtenerLibros(where)
@@ -49,12 +50,6 @@ class MasterPanel(MasterPanelDesigner):
             id_celda = item['values'][0]
             FormLibro(basedatos=self.bd, id_libro=str(id_celda), id_usuario=str(self.id_usuario))     
     
-    def llenarTablaVacia(self):
-        contador = 0
-        for i in 20:
-            etiqueta = "FilaPar.Treeview" if contador % 2 == 0 else "FilaImpar.Treeview"
-            self.lista.insert('', 'end', values=["","",""], tags=(etiqueta,))
-            contador += 1 
 
 
 
