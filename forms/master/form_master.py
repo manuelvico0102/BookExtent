@@ -7,7 +7,6 @@
 from forms.master.form_master_designer import MasterPanelDesigner
 from db.BD import BaseDatos
 from forms.libro.form_libro import FormLibro
-from threading import Thread
 
 class MasterPanel(MasterPanelDesigner):
     """
