@@ -1,24 +1,39 @@
-import speech_recognition as sr
+"""
+    Archivo con las funciones necesarias para el reconocimiento facial.
+
+    Autor: Manuel Vico Arboledas.
+"""
 import cv2
 import numpy as np
 import face_recognition as fr
-import os
-import random
 from db.BD import BaseDatos
-from forms.master.form_master import MasterPanel
 import time
 
-# Necesito una hebra para el microfono
 def capturarFoto():
+    """
+    Función que captura una foto
+
+    Returns:
+        img: imagen capturada
+    """
     cam = cv2.VideoCapture(0)
     ret, imagen = cam.read()
     cam.release()
     return imagen
 
-# Llamar a la función para capturar una foto cuando se diga "foto"
-# capturarFoto()
-
 def CrearUsuarioConFoto(bd, usuario, contra, img):
+    """
+    Función que crea un usuario con una foto
+
+    Args:
+        bd (obj): Objeto de la clase BaseDatos
+        usuario (str): Nombre de usuario
+        contra (str): Contraseña
+        img (obj): Imagen capturada
+    
+    Returns:
+        bool: True si se ha creado el usuario, False si no se ha creado
+    """
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     caras_detectadadas = fr.face_locations(img)
     if len(caras_detectadadas) > 0:
@@ -31,6 +46,14 @@ def CrearUsuarioConFoto(bd, usuario, contra, img):
         return False
 
 def codificarFoto(bd, idusuario, ruta):
+    """
+    Función que codifica una foto
+
+    Args:
+        bd (obj): Objeto de la clase BaseDatos
+        idusuario (int): Id del usuario
+        ruta (str): Ruta de la foto
+    """
     img = cv2.imread(ruta)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     cod = fr.face_encodings(img)[0]
@@ -39,18 +62,17 @@ def codificarFoto(bd, idusuario, ruta):
     BaseDatos.subirImagenCodificada(self=bd, idusuario=idusuario, cod=imagen_codificada)
 
 
-"""
-# Establezco conexion a la base de datos
-bd = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
-BaseDatos.conexion(self=bd)
-
-codificarFoto(bd=bd, idusuario="1", ruta="Personal\FOTO.jpg")
-
-# Se cierra conexion a la base de datos
-BaseDatos.desconexion(self=bd)"""
-
-
 def reconocimientoFacial(ids, rostroscod):
+    """
+    Función que realiza el reconocimiento facial
+    
+    Args:
+        ids (list): Lista de ids
+        rostroscod (list): Lista de codificaciones de rostros
+
+    Returns:
+        id: Id del usuario
+    """
     # Variables
     id = None
     comp1 = 100
@@ -95,28 +117,6 @@ def reconocimientoFacial(ids, rostroscod):
 
             if comparacion[min]:
                 id = ids[min]
-                """nombre = nombres[min].upper()
-                # Extraemos las coordenadas
-                yi, xf, yf, xi = faceloc
-                # Escalamos las coordenadas
-                yi, xf, yf, xi = yi*4, xf*4, yf*4, xi*4
-
-                indice = comparacion.index(True)
-
-                # Comparamos
-                if comp1 != indice:
-                    # Para dibujar cambiamos colores
-                    r = random.randrange(0, 255, 50)
-                    g = random.randrange(0, 255, 50)
-                    b = random.randrange(0, 255, 50)   
-
-                    comp1 = indice
-                
-                if comp1 == indice:
-                    # Dibujamos
-                    #cv2.rectangle(frame, (xi, yi), (xf, yf), (r, g, b), 3)
-                    #cv2.rectangle(frame, (xi, yf-35), (xf, yf), (r, g, b), cv2.FILLED)
-                    #cv2.putText(frame, nombre, (xi+6, yf-6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)"""
                 cv2.destroyAllWindows()
                 fin = True
                 print(id)

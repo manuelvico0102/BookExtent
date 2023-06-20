@@ -1,13 +1,31 @@
+"""
+    Archivo con el diseño de la ventana de inicio de sesión.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import BOLD
 import util.generic as utl
-from threading import Thread
-import cv2
 
 class FormLoginDesigner:
+    """
+    Clase que contiene el diseño de la ventana de inicio de sesión
 
+    Atributos:
+        ventana: ventana de inicio de sesión
+        usuario: campo de texto para introducir el usuario
+        password: campo de texto para introducir la contraseña
+
+    """
     def __init__(self, basedatos):   
+        """
+        Constructor de la clase
+        
+        Args:
+            basedatos (obj): Objeto de la clase BaseDatos
+        """
         self.ventana = tk.Tk()
         self.ventana.title("Inicio de sesión")
         self.ventana.geometry('800x500')

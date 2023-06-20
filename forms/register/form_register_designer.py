@@ -1,3 +1,9 @@
+"""
+    Archivo con el diseño de la ventana de registrar.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter.font import BOLD
@@ -6,8 +12,22 @@ import util.generic as utl
 
 
 class FormRegisterDesigner():
+    """
+    Clase que contiene el diseño de la ventana de registro
 
+    Atributos:
+        ventana: ventana de registro
+        usuario: campo de texto para introducir el usuario
+        password: campo de texto para introducir la contraseña
+        confirmacion: campo de texto para introducir la confirmación de la contraseña
+    """
     def __init__(self, basedatos):
+        """
+        Constructor de la clase
+
+        Args:
+            basedatos (obj): Objeto de la clase BaseDatos
+        """
         self.ventana = tk.Tk()
         self.ventana.title("Registro")
         self.ventana.config(bg='#fcfcfc')

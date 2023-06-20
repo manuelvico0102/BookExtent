@@ -1,19 +1,54 @@
+"""
+    Archivo con el diseño de la ventana principal.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from tkinter.font import BOLD
 import util.generic as utl
 from db.BD import BaseDatos
+import util.speech as speech
+from threading import Event
 
 
 class MasterPanelDesigner:
+    """
+    Clase que representa la ventana principal, parte de diseño
+
+    Atributos:
+        ventana: ventana principal
+        bd: objeto de la clase BaseDatos
+        id_usuario: id del usuario
+        nombre: nombre del usuario
+        categoriaActual: categoria actual
+        lcategoria: label de la categoria actual
+        lista: lista de libros
+        buscador: campo de texto para buscar libros
+        comando_ejecutandose: booleano para saber si se esta ejecutando un comando
+        eventoStop: evento para parar el hilo
+    """
     def __init__(self, basedatos : BaseDatos, id_usuario):
+        """
+        Constructor de la clase
+        
+        Args:
+            basedatos (obj): Objeto de la clase BaseDatos
+            id_usuario (int): Id del usuario
+        """
         self.bd = basedatos
         self.id_usuario = id_usuario
+
+        self.comando_ejecutandose = False   # Para que no se ejecute el comando varias veces
+        self.eventoStop = Event()           # Evento para parar el hilo
+        speech.inicio_reconocimiento_voz(self=self, ventana="principal")
+
         self.ventana = tk.Tk()
         self.ventana.title('BookExtent')
         w, h = self.ventana.winfo_screenwidth(), self.ventana.winfo_screenheight()
-        
+
         self.ventana.geometry("%dx%d+0+0" % (w, h))
         self.ventana.config(bg='#fcfcfc')
         self.ventana.resizable(width=0, height=0)
@@ -83,10 +118,6 @@ class MasterPanelDesigner:
         self.lista.column(2, anchor=CENTER)
         self.lista.column(3, anchor=CENTER)
         self.lista.pack(fill=tk.X, padx=20, pady=10)
-        """self.lista.tag_configure("FilaPar.Treeview", background="#000000", foreground="white")
-        self.lista.tag_configure("FilaImpar.Treeview", background="#2D2D2D", foreground="white")
-        if(len(self.lista.get_children()) == 0):
-            self.llenarTablaVacia()"""
         self.lista.bind("<Double-Button-1>", self.doble_clic)
         
         self.buscador = ttk.Entry(frame_form, font=('Times', 14))

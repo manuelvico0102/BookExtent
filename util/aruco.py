@@ -1,9 +1,23 @@
+"""
+    Archivo con la funcion necesaria para proyectar una imagen sobre un marcador aruco.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 import cv2
 import numpy as np
-import sys
 import os
+
+#Variable global para saber si la camara esta ejecutandose
 camaraEjecutandose = False
+
 def proyectar(imagen):
+    """
+    Método que proyecta una imagen sobre un marcador
+
+    Args:
+        imagen (obj): Imagen a proyectar
+    """
     if os.path.exists('camara.py'):
         import camara
     else:

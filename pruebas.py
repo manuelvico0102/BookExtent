@@ -1,4 +1,20 @@
-from threading import Thread, Event, Lock
+from db.BD import BaseDatos
+from forms.libro.form_libro import FormLibro
+from threading import Thread
+
+# Establezco conexion a la base de datos
+bd = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
+
+if BaseDatos.conexion(self=bd):
+    hebraVoz = Thread(target=FormLibro, args=[bd, "1", "25"], daemon=True)
+    hebraVoz.start()
+    hebraVoz.join()
+    #FormLibro(basedatos=bd, id_libro="1", id_usuario=25)
+
+# Se cierra conexion a la base de datos
+BaseDatos.desconexion(self=bd)
+
+"""from threading import Thread, Event, Lock
 import time
 
 lock = Lock()
@@ -49,6 +65,6 @@ h3.start()
 
 h1.join() # nos incorporamos al hilo principal
 
-# Una hebra que este pendiente del microfono
+# Una hebra que este pendiente del microfono"""
 
 

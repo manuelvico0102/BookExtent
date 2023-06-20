@@ -1,30 +1,41 @@
+"""
+    Archivo con el diseño de la ventana de libro.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import BOLD
 import util.generic as utl
 from db.BD import BaseDatos
-from threading import Thread, Event, Lock
+from threading import Event
 import util.speech as speech
 
 
 class FormLibroDesigner:
-
+    """
+        Clase que representa la ventana de un libro, parte de diseño
+    """
     def __init__(self, basedatos : BaseDatos, id_libro=None, id_usuario=None):
+        """
+            Constructor de la clase
+
+            Args:
+                basedatos (obj): Objeto de la clase BaseDatos
+                id_libro (int): Id del libro
+                id_usuario (int): Id del usuario
+        """
         self.id_libro = id_libro
         self.bd = basedatos
         self.id_usuario = id_usuario
         self.comando_ejecutandose = False   # Para que no se ejecute el comando varias veces
         self.eventoStop = Event()           # Evento para parar el hilo
+        
         if(BaseDatos.existeLibro(self=self.bd, id_libro=self.id_libro)):
-            #Traemos el libro || cambiar esto por una funcion
-            self.libro = BaseDatos.obtenerLibro(self=self.bd, id_libro=self.id_libro)
-            self.titulo_libro = self.libro[0][1]
-            self.autor_libro = self.libro[0][2]
-            self.desc_libro = BaseDatos.obtenerDescripcion(self=self.bd, id_libro=self.id_libro)
-            self.desc_libro = self.desc_libro[0][0]
-            self.imagen_libro = BaseDatos.descargarImagen(self=self.bd, id_libro=self.id_libro)
+            self.obtenerInformacionLibro()
            
-            speech.inicio_reconocimiento_voz(self=self)
+            speech.inicio_reconocimiento_voz(self=self, ventana="libro")
 
             self.ventana = tk.Toplevel()
             self.ventana.title("Libro")
@@ -34,7 +45,7 @@ class FormLibroDesigner:
             utl.centrar_ventana(self.ventana,800,600)
             
 
-            # Pasar la imagen de CV2 --> PIL --> Imagen compatible con tkinter || Cambiar esto por una funcion que englobe las dos
+            # Pasar la imagen de CV2 --> PIL --> Imagen compatible con tkinter
             self.imagen = utl.convertirCV2aPIL(self.imagen_libro)
             portada = utl.imagenResize(self.imagen, (200, 300))
 
@@ -107,6 +118,9 @@ class FormLibroDesigner:
         else: 
             messagebox.showerror(master=self.ventana, message="El libro no existe", title="Mensaje")
     
+    def obtenerInformacionLibro(self):
+        pass
+
     def guardarCategoria(self, id_usuario, id_libro, id_categoria):
         pass
 
@@ -120,12 +134,12 @@ class FormLibroDesigner:
         pass
 
     def cerrar_ventana(self):
+        """
+            Método para cerrar la ventana
+
+            Args:
+                self (obj): Objeto de la clase FormLibro
+        """
         speech.cerrar_ventana(self=self)
         self.ventana.destroy()
-
-    """def inicio_reconocimiento_voz(self):
-        pass
-
-    
-"""
 

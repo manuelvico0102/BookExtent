@@ -1,3 +1,9 @@
+"""
+    Archivo con la parte de la funcionalidad de la ventana de registro.
+
+    Autor: Manuel Vico Arboledas.
+"""
+
 from forms.register.form_register_designer import FormRegisterDesigner
 from db.BD import BaseDatos
 from tkinter import messagebox
@@ -7,11 +13,30 @@ from forms.master.form_master import MasterPanel
 from util.reconocimiento import capturarFoto, CrearUsuarioConFoto
 
 class FormRegister(FormRegisterDesigner):
+    """
+    Clase que representa la ventana de registro
+
+    Atributos:
+        ventana: ventana de registro
+        usuario: campo de texto para introducir el usuario
+        password: campo de texto para introducir la contraseña
+        confirmacion: campo de texto para introducir la confirmación de la contraseña
+        bd: objeto de la clase BaseDatos
+    """
     def __init__(self, basedatos : BaseDatos):
+        """
+        Constructor de la clase
+
+        Args:
+            basedatos (obj): Objeto de la clase BaseDatos
+        """
         self.bd = basedatos
         super().__init__(basedatos=self.bd)
 
     def register(self):
+        """
+        Método que registra un usuario
+        """
         usuario_db = self.bd.obtenerUsuario(username=self.usuario.get())
         if not (self.existeUsuario(usuario_db)):
             if(self.coincideContrasenia()):
@@ -29,6 +54,12 @@ class FormRegister(FormRegisterDesigner):
                     messagebox.showerror(message="No se ha detectado ninguna cara", title="Mensaje")
 
     def coincideContrasenia(self):
+        """
+        Método que verifica si la contraseña coincide
+
+        Returns:
+            bool: True si la contraseña coincide, False si no coincide
+        """
         estado: bool = True
         if(self.password.get() != self.confirmacion.get()):
             estado = False
@@ -38,6 +69,15 @@ class FormRegister(FormRegisterDesigner):
         return estado
     
     def existeUsuario(self, usuario):
+        """
+        Método que verifica si el usuario existe
+        
+        Args:
+            usuario (list): Lista de usuarios
+        
+        Returns:
+            bool: True si el usuario existe, False si no existe
+        """
         estado: bool = False
         if(usuario):
             estado = True
