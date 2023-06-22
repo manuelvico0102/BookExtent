@@ -45,13 +45,12 @@ def reconocimiento_voz(self, ventana):
     
     with sr.Microphone() as source:
         print("Puedes hablar")
+        # Ajusta el ruido de fondo
         self.r.adjust_for_ambient_noise(source)
+        # Ajusta el umbral de energia
+        self.r.energy_threshold = 4000
         while not self.eventoStop.is_set():
-            if ventana == "libro":
-                #audio = self.r.listen(source, timeout=5)
-                audio = self.r.listen(source)
-            else:
-                    audio = self.r.listen(source)
+            audio = self.r.listen(source)
             procesar_audio(self, audio, ventana)
 
 
