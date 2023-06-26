@@ -7,7 +7,7 @@ from cryptography.fernet import Fernet
 
 def encrypted(password:str):
     """
-    Método que encripta la contraseña
+    Método que encripta la contraseña con el algoritmo Fernet
 
     Args:
         password (str): Contraseña
@@ -22,7 +22,7 @@ def encrypted(password:str):
 
 def decrypt(password:str):
     """
-    Método que desencripta la contraseña
+    Método que desencripta la contraseña con el algoritmo Fernet
 
     Args:
         password (str): Contraseña

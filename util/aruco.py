@@ -13,7 +13,7 @@ camaraEjecutandose = False
 
 def proyectar(imagen):
     """
-    Método que proyecta una imagen sobre un marcador
+    Método que proyecta una imagen sobre un marcador (homografía)
 
     Args:
         imagen (obj): Imagen a proyectar
@@ -45,17 +45,16 @@ def proyectar(imagen):
                 framerecortado = framerectificado[roi_y : roi_y + roi_h, roi_x : roi_x + roi_w]
 
                 (corners, ids, rejected) = cv2.aruco.detectMarkers(framerecortado, DIC, parameters=parametros)
-        
-                if np.all(ids != None):    
-                    #aruco = cv2.aruco.drawDetectedMarkers(framerecortado, corners)
 
+                # Si se detecta un marcador
+                if np.all(ids != None):    
                     #Guardamos las esquinas del marcador
                     c1 = (corners[0][0][0][0], corners[0][0][0][1])
                     c2 = (corners[0][0][1][0], corners[0][0][1][1])
                     c3 = (corners[0][0][2][0], corners[0][0][2][1])
                     c4 = (corners[0][0][3][0], corners[0][0][3][1])
 
-                    #Creamos una copiar para luego superponer dos imagenes
+                    #Creamos una copia para luego superponer dos imagenes
                     copy = framerecortado
                     #Extraemos el tamaño de la imagen
                     tamaño = imagen.shape
