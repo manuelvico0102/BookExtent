@@ -6,9 +6,15 @@
 
 from db.BD import BaseDatos
 from forms.login.InicioLogin import inicioLogin
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Establezco conexion a la base de datos
-bd = BaseDatos(usuario="x6520114", password="x6520114", dsn="oracle0.ugr.es:1521/practbd.oracle0.ugr.es")
+usuario = os.environ.get("usuario")
+password = os.environ.get("password")
+dsn = os.environ.get("dsn")
+bd = BaseDatos(usuario=usuario, password=password, dsn=dsn)
 
 if BaseDatos.conexion(self=bd):
     inicioLogin(basedatos=bd)
