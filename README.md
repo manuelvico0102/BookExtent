@@ -29,3 +29,25 @@ La idea principal de esta aplicación es proporcionar a los usuarios una platafo
 
 6. Hebras
 - Uso de hebras para evitar la paralización de ventanas al abrir la cámara y para la implementación de comandos por voz.
+
+## Uso
+
+Para el uso de la aplicación es necesario contar con una base de datos oracle o similar.
+
+Puedes obtener la estructura de la base de dato en documentacion/CUIA-BD.sql.
+
+Trás esto, ya puedes iniciar la aplicación con:
+
+```bash
+python main.py
+```
+
+Será necesario crear un usuario desde el principio.
+
+## Capturas
+
+![Inicio](imagenes/inicio.png)
+
+![Principal](imagenes/principal.png)
+
+![Libro](imagenes/libro.png)

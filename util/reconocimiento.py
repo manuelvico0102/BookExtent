@@ -73,6 +73,10 @@ def reconocimientoFacial(ids, rostroscod):
     Returns:
         id: Id del usuario
     """
+
+    if len(ids) == 0:
+        return None
+
     # Variables
     id = None
     comp1 = 100

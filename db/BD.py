@@ -331,15 +331,16 @@ class BaseDatos:
         nombres = []
         rostroscod = []
         for id, nombre, imagen_codificada in codificaciones:
-            # Leer los datos de la columna imagen_codificada
-            buffer = imagen_codificada.read()
+            if imagen_codificada is not None: 
+                # Leer los datos de la columna imagen_codificada
+                buffer = imagen_codificada.read()
 
-            # Convertir los datos en un arreglo NumPy
-            codificacion = np.frombuffer(buffer, dtype=np.float64)
+                # Convertir los datos en un arreglo NumPy
+                codificacion = np.frombuffer(buffer, dtype=np.float64)
 
-            ids.append(id)
-            nombres.append(nombre)
-            rostroscod.append(codificacion)
+                ids.append(id)
+                nombres.append(nombre)
+                rostroscod.append(codificacion)
 
         return ids, nombres, rostroscod
     
